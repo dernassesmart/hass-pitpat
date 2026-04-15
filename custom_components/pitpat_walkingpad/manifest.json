@@ -9,7 +9,7 @@
       "local_name": "PitPat*"
     }
   ],
-  "codeowners": [],
+  "codeowners": ["@dernassesmart"],
   "config_flow": true,
   "dependencies": [
     "bluetooth",
@@ -18,6 +18,5 @@
   "documentation": "https://github.com/dernassesmart/hass-pitpat",
   "integration_type": "device",
   "iot_class": "local_push",
-  "requirements": [],
   "version": "0.1.0"
 }

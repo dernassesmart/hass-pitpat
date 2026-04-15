@@ -1,3 +1,4 @@
 {
-  "name": "PitPat WalkingPad"
+  "name": "PitPat WalkingPad",
+  "homeassistant": "2023.8.0"
 }

@@ -60,11 +60,16 @@ Connects via Bluetooth Low Energy (BLE) straight from your Home Assistant host.
 
 ## Setup
 
-1. In Home Assistant go to **Settings → Devices & Services → Add Integration**
+**Automatic (recommended):**
+1. Make sure your WalkingPad is powered on
+2. Home Assistant will automatically detect it and show a notification: *"New device found: PitPat-T01"*
+3. Click **Configure** and confirm — done!
+
+**Manual (if auto-detection doesn't work):**
+1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **PitPat WalkingPad**
 3. Enter the Bluetooth **MAC address** of your treadmill
-   - You can find it in the PitPat app, or use a BLE scanner app (e.g. *nRF Connect*)
-   - Format: `AA:BB:CC:DD:EE:FF`
+   - Use a BLE scanner app like *nRF Connect* → connect to the device → look for the address
 4. Give it a name and click **Submit**
 
 The integration will appear as a device with all sensors and controls ready to use.
