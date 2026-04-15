@@ -7,6 +7,7 @@ from typing import Any
 from homeassistant.components.switch import SwitchDeviceClass, SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -39,15 +40,19 @@ class PitPatBeltSwitch(CoordinatorEntity[PitPatCoordinator], SwitchEntity):
         self._temporary_state: TemporaryValue[BeltState] = TemporaryValue()
 
     @property
+    def device_info(self) -> DeviceInfo:
+        return self.coordinator.device_info
+
+    @property
     def is_on(self) -> bool:
         current_ts = self.coordinator.data.get("status_timestamp", 0)
         current_state = self.coordinator.data.get("belt_state", BeltState.STOPPED)
 
-        # Drop the optimistic state once the device confirms (unless still starting)
+        # Drop optimistic state once device confirms (unless still in countdown)
         if (
             self._temporary_state.has_value
             and current_state != BeltState.STARTING
-            and current_ts > self._temporary_state._expiration
+            and self._temporary_state.is_expired(current_ts)
         ):
             self._temporary_state.reset()
 

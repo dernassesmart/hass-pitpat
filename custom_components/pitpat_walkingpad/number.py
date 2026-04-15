@@ -6,6 +6,7 @@ from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfSpeed
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -38,6 +39,10 @@ class PitPatSpeedNumber(CoordinatorEntity[PitPatCoordinator], NumberEntity):
     def __init__(self, coordinator: PitPatCoordinator) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{coordinator.device.mac}-{NUMBER_KEY}"
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return self.coordinator.device_info
 
     @property
     def native_value(self) -> float:

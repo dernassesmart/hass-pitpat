@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
 from collections.abc import Callable
 from datetime import timedelta
 from typing import Any
 
 from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -19,6 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 STATUS_UPDATE_INTERVAL = timedelta(seconds=5)
 STATUS_UPDATE_TIMEOUT_SECONDS = 15
+STALE_DATA_TIMEOUT_SECONDS = 60
 
 
 class PitPatCoordinator(DataUpdateCoordinator[PitPatStatus]):
@@ -53,12 +56,31 @@ class PitPatCoordinator(DataUpdateCoordinator[PitPatStatus]):
     async def _async_update_data(self) -> PitPatStatus:
         async with asyncio.timeout(STATUS_UPDATE_TIMEOUT_SECONDS):
             await self.device.update_state()
-        # Actual data arrives via the notification callback below.
+
+        # If notifications stopped arriving, force a reconnect.
+        if self.data["status_timestamp"] > 0:
+            age = time.monotonic() - self.data["status_timestamp"]
+            if age > STALE_DATA_TIMEOUT_SECONDS:
+                _LOGGER.warning(
+                    "No notification from PitPat for %.0f s — reconnecting", age
+                )
+                await self.device.disconnect()
+                await self.device.connect()
+
         return self.data
 
     @property
     def connected(self) -> bool:
         return self.device.connected
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(
+            identifiers={(DOMAIN, self.device.mac)},
+            name=self.device.name,
+            manufacturer="PitPat / Fugoo",
+            model="WalkingPad T01",
+        )
 
     # ------------------------------------------------------------------
     # Notification callback (called from walkingpad.py)

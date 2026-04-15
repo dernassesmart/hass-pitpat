@@ -38,6 +38,10 @@ class TemporaryValue(Generic[T]):
         """Return the temporary value without expiry check, else fallback."""
         return self._value if self._value is not None else fallback
 
+    def is_expired(self, current_timestamp: float) -> bool:
+        """Return True if the value has expired or was never set."""
+        return self._value is None or current_timestamp > self._expiration
+
     def reset(self) -> None:
         self._value = None
         self._expiration = 0.0

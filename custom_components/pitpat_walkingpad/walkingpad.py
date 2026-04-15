@@ -133,11 +133,8 @@ class WalkingPad:
 
     @property
     def connected(self) -> bool:
-        return (
-            self._connected
-            and self._client is not None
-            and self._client.is_connected
-        )
+        client = self._client  # local ref avoids race with disconnect()
+        return self._connected and client is not None and client.is_connected
 
     def register_status_callback(self, callback: Callable[[PitPatStatus], None]) -> None:
         self._callbacks.append(callback)
