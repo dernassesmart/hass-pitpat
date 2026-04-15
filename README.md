@@ -104,6 +104,12 @@ No `ph4-walkingpad` library. No cloud. No bridge. Just `bleak` + Home Assistant'
 
 ---
 
+## Bugs / Feature Requests
+
+Please use the [GitHub Issue Tracker](https://github.com/dernassesmart/hass-pitpat/issues).
+
+---
+
 ## Credits
 
 - Protocol reverse-engineering: [peteh/pacekeeper](https://github.com/peteh/pacekeeper)

@@ -16,6 +16,7 @@
     "bluetooth_adapters"
   ],
   "documentation": "https://github.com/dernassesmart/hass-pitpat",
+  "issue_tracker": "https://github.com/dernassesmart/hass-pitpat/issues",
   "integration_type": "device",
   "iot_class": "local_push",
   "version": "0.1.0"
