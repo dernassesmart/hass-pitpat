@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "PitPat WalkingPad",
+        "description": "Enter the Bluetooth MAC address of your PitPat WalkingPad. You can find it in the PitPat app or by scanning for BLE devices.",
+        "data": {
+          "mac": "MAC Address (e.g. AA:BB:CC:DD:EE:FF)",
+          "name": "Device name"
+        }
+      },
+      "confirm": {
+        "title": "PitPat WalkingPad found",
+        "description": "Found **{name}** ({address}). Do you want to add it?"
+      }
+    },
+    "error": {
+      "cannot_connect": "Device not found. Make sure the WalkingPad is powered on and in Bluetooth range.",
+      "unknown": "Unexpected error. Check the Home Assistant logs."
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  }
+}
