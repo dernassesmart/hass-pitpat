@@ -84,7 +84,7 @@ The integration talks directly to the WalkingPad over BLE using the protocol doc
 - **Write characteristic:** `0000fba1-...` — sends 23-byte command packets
 - **Notify characteristic:** `0000fba2-...` — receives 31-byte status packets every few seconds
 
-No `ph4-walkingpad` library. No cloud. No bridge. Just `bleak` + Home Assistant's built-in Bluetooth stack.
+No `ph4-walkingpad` library. No cloud. No bridge. Uses `bleak_retry_connector` for robust BLE connections including ESPHome Bluetooth proxy support.
 
 ---
 
@@ -101,6 +101,19 @@ No `ph4-walkingpad` library. No cloud. No bridge. Just `bleak` + Home Assistant'
 
 **No Bluetooth on my HA host**
 - Add an [ESPHome Bluetooth proxy](https://esphome.io/components/bluetooth_proxy) — a ~5€ ESP32 is enough
+
+**Enable debug logging**
+
+Add this to your `configuration.yaml` to see exactly what the integration is doing:
+
+```yaml
+logger:
+  logs:
+    custom_components.pitpat_walkingpad: debug
+    bleak_retry_connector: debug
+```
+
+Then restart HA and check **Settings → System → Logs**. You'll see connection attempts, raw BLE packet contents, and parsed sensor values.
 
 ---
 
